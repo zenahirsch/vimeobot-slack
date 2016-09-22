@@ -8,7 +8,8 @@ router.get('/', function(req, res, next) {
 
 router.post('/', function(req, res, next) {
   res.status(200).json({
-  	"text": "hello!"
+  	"response_type": "in_channel",
+  	"text": "hello! https://vimeo.com/183752285"
   });
 });
 
