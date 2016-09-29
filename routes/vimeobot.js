@@ -15,7 +15,7 @@ var sendDelayedResponse = function (response_url, response) {
 	})
 };
 
-var makeRequest = function (res, path, page, fields, query, callback) {
+var makeRequest = function (req, res, path, page, fields, query, callback) {
 	var req_query = {
 		page: page,
 		per_page: 1,
@@ -32,7 +32,10 @@ var makeRequest = function (res, path, page, fields, query, callback) {
 	}, (error, body, status_code, headers) => {
 		console.log(body);
 		if (error) {
-			sendDelayedResponse(error.error);
+			sendDelayedResponse(req.body.response_url, {
+				'response_type': 'in_channel',
+				'text': error.error
+			});
 		} else {
 			callback(body);
 		}
@@ -74,10 +77,10 @@ router.post('/', (req, res, next) => {
   		'text': `Searching the depths of Vimeo for that...`
   	});
 
-	makeRequest(res, path, 1, 'uri', query, (body) => {
+	makeRequest(req, res, path, 1, 'uri', query, (body) => {
 		var rand_page = Math.floor(Math.random() * body.total) + 1;
 		console.log('the rand_page', rand_page);
-		makeRequest(res, path, rand_page, 'link', query, (body) => {
+		makeRequest(req, res, path, rand_page, 'link', query, (body) => {
 			/*res.status(200).json({
 		 		'response_type': 'in_channel',
 		  		'text': `Hey ${req.body.user_name}, here's your video! ${body.data[0].link}`
