@@ -10,11 +10,12 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/', (req, res, next) => {
-	var makeRequest = function (path, page, fields, callback) {
+	var makeRequest = function (path, page, per_page, fields, callback) {
 		lib.request({
 			path: path,
 			query: {
 				page: page,
+				per_page: per_page,
 				fields: fields
 			}
 		}, (error, body, status_code, headers) => {
@@ -28,8 +29,9 @@ router.post('/', (req, res, next) => {
 		})
 	};
 
-	makeRequest('/channels/927', 1, 'metadata.connections.videos.total', (body) => {
-		makeRequest('/channels/927/videos', body.metadata.connections.videos.total, 'link', (body) => {
+	makeRequest('/channels/927', 1, null, 'metadata.connections.videos.total', (body) => {
+		var rand_page = Math.floor(Math.random() * body.metadata.connections.videos.total) + 1;
+		makeRequest('/channels/927/videos', rand_page, 1, 'link', (body) => {
 			res.status(200).json({
 		 		'response_type': 'in_channel',
 		  		'text': body.data[0].link
