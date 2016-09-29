@@ -76,6 +76,7 @@ router.post('/', (req, res, next) => {
 
 	makeRequest(res, path, 1, 'uri', query, (body) => {
 		var rand_page = Math.floor(Math.random() * body.total) + 1;
+		console.log('the rand_page', rand_page);
 		makeRequest(res, path, rand_page, 'link', query, (body) => {
 			/*res.status(200).json({
 		 		'response_type': 'in_channel',
