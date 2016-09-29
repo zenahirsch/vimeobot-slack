@@ -4,21 +4,12 @@ var router = express.Router();
 
 var lib = new Vimeo(process.env.CLIENT_ID, process.env.CLIENT_SECRET, process.env.ACCESS_TOKEN);
 
-/* GET vimeobot index. */
-router.get('/', function(req, res, next) {
- 	res.render('index', { title: 'Express' });
-});
-
-router.post('/', (req, res, next) => {
-	var video = null;
-	var num_pages = 0;	
-
+var makeRequest = function (path, page, fields, callback) {
 	lib.request({
-		path: '/videos',
+		path: path,
 		query: {
 			page: 1,
-			query: 'cool',
-			fields: 'uri'
+			fields: fields
 		}
 	}, (error, body, status_code, headers) => {
 		if (error) {
@@ -26,14 +17,43 @@ router.post('/', (req, res, next) => {
 				'text': `There was an error ${error}`
 			});
 		} else {
-			num_pages = body.total;
+			callback(body);
+		}
+	})
+};
 
+/* GET vimeobot index. */
+router.get('/', function(req, res, next) {
+ 	res.render('index', { title: 'Express' });
+});
+
+router.post('/', (req, res, next) => {
+	makeRequest('/channel/927', 1, 'metadata.connections.videos.total', (body) => {
+		makeRequest('/channel/927/videos', body.metadata.connections.videos.total, 'link', (body) => {
+			res.status(200).json({
+		 		'response_type': 'in_channel',
+		  		'text': body.data[0].link
+		  	});
+		});
+	});
+/*
+	lib.request({
+		path: `/${type}/${id}`,
+		query: {
+			page: 1,
+			fields: 'metadata.connections.videos.total'
+		}
+	}, (error, body, status_code, headers) => {
+		if (error) {
+			res.status(500).json({
+				'text': `There was an error ${error}`
+			});
+		} else {
 			lib.request({
-				path: '/videos',
+				path: `/${type}/${id}/videos`,
 				query: {
-					page: Math.floor(Math.random() * num_pages) + 1,
+					page: Math.floor(Math.random() * body.metadata.connections.videos.total) + 1,
 					per_page: 1,
-					query: 'cool'
 					fields: 'name,description,link'
 				}
 			}, (error, body, status_code, headers) => {
@@ -42,17 +62,15 @@ router.post('/', (req, res, next) => {
 						"text": `There was an error ${error}`
 					});
 				} else {
-					//video = body.data[(Math.random() * 50) + 1];
-					video = body.data[0];
-
 					res.status(200).json({
 				 		'response_type': 'in_channel',
-				  		'text': video.link
+				  		'text': body.data[0].link
 				  	});
 				}
 			});
 		}
 	});
+*/
 });
 
 module.exports = router;
