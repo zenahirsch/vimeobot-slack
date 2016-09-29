@@ -32,7 +32,7 @@ router.post('/', (req, res, next) => {
 	console.log(req.body);
 	res.status(200).json({
  		'response_type': 'in_channel',
-  		'text': req.body;
+  		'text': req.body
   	});
 /*
 	makeRequest(res, '/channels/927', 1, null, 'metadata.connections.videos.total', (body) => {
