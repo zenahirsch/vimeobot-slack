@@ -21,9 +21,7 @@ var makeRequest = function (res, path, page, fields, query, callback) {
 		query: req_query
 	}, (error, body, status_code, headers) => {
 		if (error) {
-			res.status(500).json({
-				'text': `There was an error ${error}`
-			});
+			console.log(error);
 		} else {
 			callback(body);
 		}
@@ -35,9 +33,7 @@ var sendDelayedResponse = function (response_url, response) {
 		json: response
 	}, (error, res, body) => {
 		if (error) {
-			res.status(500).json({
-				'text': `There was an error ${error}`
-			});
+			console.log(error);
 		}
 	})
 };
