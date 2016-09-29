@@ -11,6 +11,7 @@ router.get('/', function(req, res, next) {
 
 router.post('/', (req, res, next) => {
 	var video = null;
+	var num_pages = 0;
 
 	lib.request({
 		path: '/channels/staffpicks/videos',
@@ -20,14 +21,31 @@ router.post('/', (req, res, next) => {
 	}, (error, body, status_code, headers) => {
 		if (error) {
 			res.status(500).json({
-				"text": `There was an error ${error}`
+				'text': `There was an error ${error}`
 			});
 		} else {
-			video = body.data[1]; // will be randomized
-			res.status(200).json({
-		 		"response_type": "in_channel",
-		  		"text": video.link
-		  	});
+			num_pages = Math.ceil(body.total / body.per_page);
+
+			lib.request({
+				path: '/channels/staffpicks/videos',
+				query: {
+					page: Math.floor(Math.random() * num_pages) + 1,
+					per_page: 50
+				}
+			}, (error, body, status_code, headers) => {
+				if (error) {
+					res.status(500).json({
+						"text": `There was an error ${error}`
+					});
+				} else {
+					video = body.data[(Math.random() * 50) + 1];
+
+					res.status(200).json({
+				 		'response_type': 'in_channel',
+				  		'text': video.link
+				  	});
+				}
+			});
 		}
 	});
 });
