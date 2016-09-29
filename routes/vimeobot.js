@@ -1,6 +1,7 @@
 var express = require('express');
 var Vimeo = require('vimeo').Vimeo;
 var router = express.Router();
+var request = require('request');
 
 var lib = new Vimeo(process.env.CLIENT_ID, process.env.CLIENT_SECRET, process.env.ACCESS_TOKEN);
 
@@ -25,6 +26,18 @@ var makeRequest = function (res, path, page, fields, query, callback) {
 			});
 		} else {
 			callback(body);
+		}
+	})
+};
+
+var sendDelayedResponse = function (response_url, response) {
+	request.post(response_url, {
+		json: response
+	}, (error, res, body) => {
+		if (error) {
+			res.status(500).json({
+				'text': `There was an error ${error}`
+			});
 		}
 	})
 };
@@ -62,8 +75,12 @@ router.post('/', (req, res, next) => {
 	makeRequest(res, path, 1, 'uri', query, (body) => {
 		var rand_page = Math.floor(Math.random() * body.total) + 1;
 		makeRequest(res, path, rand_page, 'link', query, (body) => {
-			res.status(200).json({
+			/*res.status(200).json({
 		 		'response_type': 'in_channel',
+		  		'text': `Hey ${req.body.user_name}, here's your video! ${body.data[0].link}`
+		  	});*/
+		  	sendDelayedResponse(req.body.response_url, {
+		  		'response_type': 'in_channel',
 		  		'text': `Hey ${req.body.user_name}, here's your video! ${body.data[0].link}`
 		  	});
 		});
