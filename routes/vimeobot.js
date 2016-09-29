@@ -10,7 +10,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/', (req, res, next) => {
-	let video = null;
+	var video = null;
 
 	lib.request({
 		path: '/channels/staffpicks/videos',
