@@ -8,7 +8,7 @@ var makeRequest = function (path, page, fields, callback) {
 	lib.request({
 		path: path,
 		query: {
-			page: 1,
+			page: page,
 			fields: fields
 		}
 	}, (error, body, status_code, headers) => {
