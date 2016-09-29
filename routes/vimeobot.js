@@ -85,9 +85,18 @@ router.post('/', (req, res, next) => {
 		 		'response_type': 'in_channel',
 		  		'text': `Hey ${req.body.user_name}, here's your video! ${body.data[0].link}`
 		  	});*/
+
+		  	var message = null;
+
+		  	if (body.data.length) {
+		  		message = `Hey ${req.body.user_name}, here's your video! ${body.data[0].link}`;
+		  	} else {
+		  		message = `Sorry ${req.body.user_name}, I couldn't find any videos. :(`;
+		  	}
+
 		  	sendDelayedResponse(req.body.response_url, {
 		  		'response_type': 'in_channel',
-		  		'text': `Hey ${req.body.user_name}, here's your video! ${body.data[0].link}`
+		  		'text': message
 		  	});
 		});
 	});
