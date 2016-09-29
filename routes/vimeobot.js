@@ -38,8 +38,8 @@ router.post('/', (req, res, next) => {
 						"text": `There was an error ${error}`
 					});
 				} else {
-					console.log(body);
-					video = body.data[(Math.random() * 50) + 1];
+					//video = body.data[(Math.random() * 50) + 1];
+					video = body.data[0];
 
 					res.status(200).json({
 				 		'response_type': 'in_channel',
