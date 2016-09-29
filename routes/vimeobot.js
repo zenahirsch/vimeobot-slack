@@ -38,6 +38,7 @@ router.post('/', (req, res, next) => {
 						"text": `There was an error ${error}`
 					});
 				} else {
+					console.log(body);
 					video = body.data[(Math.random() * 50) + 1];
 
 					res.status(200).json({
