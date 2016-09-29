@@ -38,41 +38,6 @@ router.post('/', (req, res, next) => {
 		  	});
 		});
 	});
-/*
-	lib.request({
-		path: `/${type}/${id}`,
-		query: {
-			page: 1,
-			fields: 'metadata.connections.videos.total'
-		}
-	}, (error, body, status_code, headers) => {
-		if (error) {
-			res.status(500).json({
-				'text': `There was an error ${error}`
-			});
-		} else {
-			lib.request({
-				path: `/${type}/${id}/videos`,
-				query: {
-					page: Math.floor(Math.random() * body.metadata.connections.videos.total) + 1,
-					per_page: 1,
-					fields: 'name,description,link'
-				}
-			}, (error, body, status_code, headers) => {
-				if (error) {
-					res.status(500).json({
-						"text": `There was an error ${error}`
-					});
-				} else {
-					res.status(200).json({
-				 		'response_type': 'in_channel',
-				  		'text': body.data[0].link
-				  	});
-				}
-			});
-		}
-	});
-*/
 });
 
 module.exports = router;
