@@ -12,12 +12,13 @@ router.get('/', function(req, res, next) {
 router.post('/', (req, res, next) => {
 	var video = null;
 	var num_pages = 0;
+	var per_page = 1;	
 
 	lib.request({
 		path: '/channels/staffpicks/videos',
 		query: {
 			page: 1,
-			per_page: 1
+			per_page: per_page
 		}
 	}, (error, body, status_code, headers) => {
 		if (error) {
@@ -25,7 +26,7 @@ router.post('/', (req, res, next) => {
 				'text': `There was an error ${error}`
 			});
 		} else {
-			num_pages = body.total;
+			num_pages = body.total / per_page;
 
 			lib.request({
 				path: '/channels/staffpicks/videos',
