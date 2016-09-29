@@ -25,7 +25,7 @@ router.post('/', (req, res, next) => {
 				'text': `There was an error ${error}`
 			});
 		} else {
-			num_pages = Math.ceil(body.total / body.per_page);
+			num_pages = body.total;
 
 			lib.request({
 				path: '/channels/staffpicks/videos',
