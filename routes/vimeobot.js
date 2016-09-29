@@ -5,6 +5,16 @@ var request = require('request');
 
 var lib = new Vimeo(process.env.CLIENT_ID, process.env.CLIENT_SECRET, process.env.ACCESS_TOKEN);
 
+var sendDelayedResponse = function (response_url, response) {
+	request.post(response_url, {
+		json: response
+	}, (error, res, body) => {
+		if (error) {
+			console.log(error);
+		}
+	})
+};
+
 var makeRequest = function (res, path, page, fields, query, callback) {
 	var req_query = {
 		page: page,
@@ -22,19 +32,9 @@ var makeRequest = function (res, path, page, fields, query, callback) {
 	}, (error, body, status_code, headers) => {
 		console.log(body);
 		if (error) {
-			console.log(error);
+			sendDelayedResponse(error.error);
 		} else {
 			callback(body);
-		}
-	})
-};
-
-var sendDelayedResponse = function (response_url, response) {
-	request.post(response_url, {
-		json: response
-	}, (error, res, body) => {
-		if (error) {
-			console.log(error);
 		}
 	})
 };
