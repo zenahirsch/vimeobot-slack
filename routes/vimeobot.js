@@ -29,6 +29,12 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/', (req, res, next) => {
+	console.log(req.body);
+	res.status(200).json({
+ 		'response_type': 'in_channel',
+  		'text': req.body;
+  	});
+/*
 	makeRequest(res, '/channels/927', 1, null, 'metadata.connections.videos.total', (body) => {
 		var rand_page = Math.floor(Math.random() * body.metadata.connections.videos.total) + 1;
 		makeRequest(res, '/channels/927/videos', rand_page, 1, 'link', (body) => {
@@ -38,6 +44,7 @@ router.post('/', (req, res, next) => {
 		  	});
 		});
 	});
+*/
 });
 
 module.exports = router;
