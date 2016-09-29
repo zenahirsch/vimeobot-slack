@@ -14,10 +14,11 @@ router.post('/', (req, res, next) => {
 	var num_pages = 0;	
 
 	lib.request({
-		path: '/channels/927',
+		path: '/videos',
 		query: {
 			page: 1,
-			fields: 'metadata.connections.videos.total'
+			query: 'cool',
+			fields: 'uri'
 		}
 	}, (error, body, status_code, headers) => {
 		if (error) {
@@ -25,13 +26,14 @@ router.post('/', (req, res, next) => {
 				'text': `There was an error ${error}`
 			});
 		} else {
-			num_pages = body.metadata.connections.videos.total;
+			num_pages = body.total;
 
 			lib.request({
-				path: '/channels/927/videos',
+				path: '/videos',
 				query: {
 					page: Math.floor(Math.random() * num_pages) + 1,
 					per_page: 1,
+					query: 'cool'
 					fields: 'name,description,link'
 				}
 			}, (error, body, status_code, headers) => {
