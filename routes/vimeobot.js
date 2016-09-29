@@ -4,7 +4,7 @@ var router = express.Router();
 
 var lib = new Vimeo(process.env.CLIENT_ID, process.env.CLIENT_SECRET, process.env.ACCESS_TOKEN);
 
-var makeRequest = function (path, page, fields, callback) {
+var makeRequest = function (res, path, page, fields, callback) {
 	lib.request({
 		path: path,
 		query: {
@@ -28,8 +28,8 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/', (req, res, next) => {
-	makeRequest('/channel/927', 1, 'metadata.connections.videos.total', (body) => {
-		makeRequest('/channel/927/videos', body.metadata.connections.videos.total, 'link', (body) => {
+	makeRequest(res, '/channel/927', 1, 'metadata.connections.videos.total', (body) => {
+		makeRequest(res, '/channel/927/videos', body.metadata.connections.videos.total, 'link', (body) => {
 			res.status(200).json({
 		 		'response_type': 'in_channel',
 		  		'text': body.data[0].link
