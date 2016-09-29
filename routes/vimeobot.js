@@ -28,8 +28,8 @@ router.post('/', (req, res, next) => {
 		})
 	};
 
-	makeRequest('/channel/927', 1, 'metadata.connections.videos.total', (body) => {
-		makeRequest('/channel/927/videos', body.metadata.connections.videos.total, 'link', (body) => {
+	makeRequest('/channels/927', 1, 'metadata.connections.videos.total', (body) => {
+		makeRequest('/channels/927/videos', body.metadata.connections.videos.total, 'link', (body) => {
 			res.status(200).json({
 		 		'response_type': 'in_channel',
 		  		'text': body.data[0].link
