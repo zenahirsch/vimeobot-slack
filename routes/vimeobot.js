@@ -5,14 +5,19 @@ var router = express.Router();
 var lib = new Vimeo(process.env.CLIENT_ID, process.env.CLIENT_SECRET, process.env.ACCESS_TOKEN);
 
 var makeRequest = function (res, path, page, fields, query, callback) {
+	var query = {
+		page: page,
+		per_page: 1,
+		fields: fields,
+	};
+
+	if (query) {
+		query.query = query;
+	}
+
 	lib.request({
 		path: path,
-		query: {
-			page: page,
-			per_page: 1,
-			fields: fields,
-			query: query
-		}
+		query: query
 	}, (error, body, status_code, headers) => {
 		if (error) {
 			res.status(500).json({
