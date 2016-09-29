@@ -20,6 +20,7 @@ var makeRequest = function (res, path, page, fields, query, callback) {
 		path: path,
 		query: req_query
 	}, (error, body, status_code, headers) => {
+		console.log(body);
 		if (error) {
 			console.log(error);
 		} else {
