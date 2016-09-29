@@ -53,6 +53,7 @@ router.post('/', (req, res, next) => {
 	}
 
 	makeRequest(res, path, 1, 'uri', query, (body) => {
+		console.log('first request body', body);
 		var rand_page = Math.floor(Math.random() * body.total) + 1;
 		console.log('RANDOM PAGE: ', rand_page);
 		makeRequest(res, path, rand_page, 'link', query, (body) => {
