@@ -16,7 +16,8 @@ router.post('/', (req, res, next) => {
 	lib.request({
 		path: '/channels/staffpicks/videos',
 		query: {
-			per_page: 50
+			page: 1,
+			per_page: 1
 		}
 	}, (error, body, status_code, headers) => {
 		if (error) {
