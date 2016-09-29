@@ -50,7 +50,9 @@ router.post('/', (req, res, next) => {
 	var path = null;
 	var query = null;
 
-	if (paths[req.body.text]) {
+	if (!req.body.text) {
+		path = '/channels/927/videos';
+	} else if (paths[req.body.text]) {
 		path = paths[req.body.text];
 	} else {
 		path = '/videos';
