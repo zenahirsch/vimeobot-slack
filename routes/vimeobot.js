@@ -72,6 +72,11 @@ router.post('/', (req, res, next) => {
 		query = req.body.text;
 	}
 
+	res.status(200).json({
+ 		'response_type': 'in_channel',
+  		'text': `Searching the depths of Vimeo for that...`
+  	});
+
 	makeRequest(res, path, 1, 'uri', query, (body) => {
 		var rand_page = Math.floor(Math.random() * body.total) + 1;
 		makeRequest(res, path, rand_page, 'link', query, (body) => {
