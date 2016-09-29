@@ -12,7 +12,7 @@ router.get('/', function(req, res, next) {
 router.post('/', (req, res, next) => {
 	var video = null;
 	var num_pages = 0;
-	var per_page = 1;	
+	var per_page = 50;	
 
 	lib.request({
 		path: '/channels/staffpicks/videos',
@@ -26,7 +26,7 @@ router.post('/', (req, res, next) => {
 				'text': `There was an error ${error}`
 			});
 		} else {
-			num_pages = body.total / per_page;
+			num_pages = Math.ceil(body.total / per_page);
 
 			lib.request({
 				path: '/channels/staffpicks/videos',
